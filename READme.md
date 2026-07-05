@@ -4,6 +4,8 @@
 
 TaskForge is an interactive task management application built using **HTML, CSS, and Vanilla JavaScript**. The project demonstrates practical usage of **DOM Manipulation**, **Event Handling**, **Event Delegation**, **Event Propagation**, **Attributes vs Properties** while providing a clean and responsive user experience.
 
+###  Live Demo →  https://taskforge-task-manager.vercel.app
+
 #  Features
 
 ### Task Management
