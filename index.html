@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskForge | Forge Your Tasks. Shape Your Productivity.</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.9.0/fonts/remixicon.css" rel="stylesheet"/>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav>
+        <div class="logo">
+            <h1 class="left-half">Task</h1><h1 class="right-half">Forge</h1>
+        </div>
+        
+        <div class="navbar">
+            <div class="counters">
+                <span class="show-counter pending" id="pending">0 pending</span>
+                <span class="show-counter done" id="done">0 done</span>
+            </div>
+
+            <button aria-label="Toggle theme" class="theme-btn" id="theme-toggle">
+                <p id="theme-icon">🌙</p>
+                <span id="theme-mode">Dark</span>
+            </button>
+        </div>
+    </nav>
+
+    <main>
+
+        <!-- Add New Task Section -->
+        <section class="add-new-task">
+            <h2>Add New Task</h2>
+
+            <div class="task-content" id="task-form">
+                <div class="task-form">
+                    <label for="task-input">Task</label>
+                    <input autocomplete="off" id="task-input" maxlength="80" placeholder="Enter your task........" type="text"/>
+                </div>
+                
+                <div class="task-form" style="max-width: 180px">
+                    <label for="categories">Category</label>
+                    <select id="categories">
+                        <option value="work">Work</option>
+                        <option value="personal">Personal</option>
+                        <option value="entertainment">Entertainment</option>
+                        <option value="study">Study</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <button class="add-btn" id="add-task-btn" type="button"> + Add Task</button>
+            </div>
+        </section>
+
+        <!-- Task Filter -->
+        <section class="task-filter">
+            <input class="search-input" id="search-input" placeholder=" 🔍 Search tasks…" type="text"/>
+
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="work">Work</button>
+            <button class="filter-btn" data-filter="personal">Personal</button>
+            <button class="filter-btn" data-filter="entertainment">Entertainment</button>
+            <button class="filter-btn" data-filter="study">Study</button>
+            <button class="filter-btn" data-filter="completed">Done</button>
+            <button class="clear-all-btn" id="clear-all-btn"><i class="ri-close-large-line"></i> Clear All</button>
+        </section>
+
+        <!-- Task List -->
+        <section class="task-list">
+            <div class="empty-state" id="empty-state">
+                <i class="ri-survey-line clipboard"></i>
+                No tasks yet — add one above!
+            </div>
+            <div id="taskList" class="task-list-items"></div>
+        </section>
+
+        <!-- Event Propagation -->
+        <section>
+            <h2 class="section-title">Event Propagation</h2>
+
+            <div class="event-propagation">
+
+                <div class="ep-mode">
+                    <span class="ep-mode-name">Mode: </span>
+                    <button class="mode-btn active" data-mode="bubble" id="bubble-btn"> Bubbling ↑ </button>
+                    <button class="mode-btn" data-mode="capture" id="capture-btn"> Capturing ↓ </button>
+                </div>
+
+                <div class="ep-display">
+                    
+                    <div class="grandparent" id="grandparent">
+                        <div class="display-name">Grandparent</div>
+                        
+                        <div class="parent" id="parent">
+                            <div class="display-name">Parent</div>
+                        
+                            <div class="child">
+                                <div class="display-name">Child</div>
+                                <button id="child-btn">Click Me</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="logging" id="ep-log">
+                    <span class="log-text">Click the button above to see event traversal in action…</span>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+
+    <script src="app.js"></script>
+</body>
+</html>
