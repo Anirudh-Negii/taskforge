@@ -12,12 +12,6 @@ const searchInput = document.querySelector('#search-input');
 const filterBtn = document.querySelectorAll('.filter-btn');
 const clearAllBtn = document.querySelector('#clear-all-btn');
 const emptyState = document.querySelector('#empty-state');
-const bubbleBtn = document.querySelector('#bubble-btn');
-const captureBtn = document.querySelector('#capture-btn');
-const grandparent = document.querySelector('#grandparent');
-const parent = document.querySelector('#parent');
-const childBtn = document.querySelector('#child-btn');
-const epLog = document.querySelector('#ep-log');
 
 let tasks = [];
 let currentFilter = 'all';
@@ -71,8 +65,6 @@ function createTaskCard(task) {
 function addTask() {
   const taskProp = taskInput.value.trim();
   const taskAttr = taskInput.getAttribute('value') ?? '(none)';
-
-  // `value` reads the live input property, while `getAttribute('value')` reads the original HTML attribute. User edits update the property, but they do not rewrite the attribute automatically.
 
   if (!taskProp) {
     taskInput.focus();
@@ -254,7 +246,6 @@ clearAllBtn.addEventListener('click', () => {
   if (tasks.length && confirm('Clear all tasks?')) clearAllTasks();
 });
 
-
 themeToggle.addEventListener('click', () => {
   const html = document.documentElement;
   const current = html.getAttribute('data-theme');
@@ -268,95 +259,6 @@ themeToggle.addEventListener('click', () => {
 
   localStorage.setItem('taskflow-theme', next);
 });
-
-
-let propMode = 'bubble'; 
-let gpListener, pListener, chListener;
-
-function flashEl(el) {
-  el.classList.add('flash');
-  setTimeout(() => el.classList.remove('flash'), 400);
-}
-
-function logEntry(step, nodeClass, nodeLabel, phase) {
-  return `<div class="log-entry">
-    <span class="log-step">${step}.</span>
-    <span class="log-node ${nodeClass}">${nodeLabel}</span>
-    <span style="color:var(--muted-shade)">→ fired (${phase} phase)</span>
-  </div>`;
-}
-
-
-function attachPropListeners() {
-  const useCapture = (propMode === 'capture');
-
-  gpListener = function(e) {
-    flashEl(grandparent);
-  };
-  pListener = function(e) {
-    flashEl(parent);
-  };
-  chListener = function(e) {
-    flashEl(childBtn);
-    // stopPropagation() cuts off the remaining bubbling phase so the demo can isolate the current flow order.
-    e.stopPropagation();
-    let order;
-    if (propMode === 'bubble') {
-      order = [
-        logEntry(1, 'ch', 'Child', 'bubble'),
-        logEntry(2, 'p', 'Parent', 'bubble'),
-        logEntry(3, 'gp', 'Grandparent', 'bubble'),
-      ];
-    } else {
-      // Capturing runs from the root down toward the target before the target's own listener fires.
-      order = [
-        logEntry(1, 'gp', 'Grandparent', 'capture'),
-        logEntry(2, 'p', 'Parent', 'capture'),
-        logEntry(3, 'ch', 'Child', 'capture'),
-      ];
-    }
-    epLog.innerHTML = order.join('');
-
-    if (propMode === 'bubble') {
-      setTimeout(() => flashEl(parent), 100);
-      setTimeout(() => flashEl(grandparent), 200);
-    }
-  };
-
-  grandparent.addEventListener('click', gpListener, useCapture);
-  parent.addEventListener('click', pListener, useCapture);
-  childBtn.addEventListener('click', chListener, useCapture);
-}
-
-function detachPropListeners() {
-  ['bubble','capture'].forEach(cap => {
-    const uc = cap === 'capture';
-    if (gpListener) grandparent.removeEventListener('click', gpListener, uc);
-    if (pListener) parent.removeEventListener('click', pListener, uc);
-    if (chListener) childBtn.removeEventListener('click', chListener, uc);
-  });
-}
-
-
-function switchPropMode(mode) {
-  detachPropListeners();
-  propMode = mode;
-  attachPropListeners();
-  epLog.innerHTML = `<span class="log-placeholder">Mode: <strong>${mode.toUpperCase()}</strong> — click the button to see the firing order</span>`;
-}
-
-bubbleBtn.addEventListener('click', () => {
-  bubbleBtn.classList.add('active');
-  captureBtn.classList.remove('active');
-  switchPropMode('bubble');
-});
-captureBtn.addEventListener('click', () => {
-  captureBtn.classList.add('active');
-  bubbleBtn.classList.remove('active');
-  switchPropMode('capture');
-});
-
-attachPropListeners();
 
 
 function saveToStorage() {
